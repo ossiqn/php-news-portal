@@ -1,0 +1,77 @@
+Options -Indexes
+Options +FollowSymLinks
+RewriteEngine On
+# Eğer site bir alt klasördeyse (örn: /site_v3/), bu satırı yorum'dan çıkar:
+# RewriteBase /site_v3/
+
+# Trailing slash kaldır (klasörler hariç)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# Haber detay: /haber/slug
+RewriteRule ^haber/([a-z0-9\-]+)$ haber/index.php?slug=$1 [L,QSA]
+
+# RSS beslemesi — KATEGORİ KISAYOLLARINDAN ÖNCE olmali
+# /rss/gundem gibi URL'ler kategori routeına takılmasın diye buraya taşındı
+RewriteRule ^rss$                    sayfa/rss.php                [L,QSA]
+RewriteRule ^rss/([a-z0-9\-]+)$     sayfa/rss.php?cat=$1         [L,QSA]
+RewriteRule ^feed$                   sayfa/rss.php?xml=1           [L,QSA]
+RewriteRule ^feed/([a-z0-9\-]+)$    sayfa/rss.php?cat=$1&xml=1   [L,QSA]
+
+# Kategori kısayolları
+RewriteRule ^gundem$          kategori/gundem.php          [L,QSA]
+RewriteRule ^siyaset$         kategori/siyaset.php         [L,QSA]
+RewriteRule ^ekonomi$         kategori/ekonomi.php         [L,QSA]
+RewriteRule ^dunya$           kategori/dunya.php           [L,QSA]
+RewriteRule ^saglik$          kategori/saglik.php          [L,QSA]
+RewriteRule ^yasam$           kategori/yasam.php           [L,QSA]
+RewriteRule ^politika$        kategori/politika.php        [L,QSA]
+RewriteRule ^magazin$         kategori/magazin.php         [L,QSA]
+RewriteRule ^spor$            kategori/spor.php            [L,QSA]
+RewriteRule ^teknoloji$       kategori/teknoloji.php       [L,QSA]
+RewriteRule ^egitim$          kategori/egitim.php          [L,QSA]
+RewriteRule ^yerel$           kategori/yerel.php           [L,QSA]
+RewriteRule ^asayis$          kategori/asayis.php          [L,QSA]
+RewriteRule ^kultur-sanat$    kategori/kultur-sanat.php    [L,QSA]
+RewriteRule ^genel$           kategori/genel.php           [L,QSA]
+RewriteRule ^cevre$           kategori/cevre.php           [L,QSA]
+RewriteRule ^biyografiler$    kategori/biyografiler.php    [L,QSA]
+RewriteRule ^yerel-haberler$  kategori/yerel-haberler.php  [L,QSA]
+
+# Sayfa rotaları
+RewriteRule ^arama$              sayfa/arama.php              [L,QSA]
+# (rss ve feed kuralları yukarıya taşındı — kategori kısayollarından önce olmalı)
+RewriteRule ^arsiv$              sayfa/arsiv.php              [L,QSA]
+RewriteRule ^gunun-haberleri$    sayfa/gunun-haberleri.php    [L,QSA]
+RewriteRule ^hava-durumu$        sayfa/hava-durumu.php        [L,QSA]
+RewriteRule ^namaz-vakitleri$    sayfa/namaz-vakitleri.php    [L,QSA]
+RewriteRule ^nobetci-eczaneler$  sayfa/nobetci-eczaneler.php  [L,QSA]
+RewriteRule ^gazete-arsivi$      sayfa/gazete-arsivi.php      [L,QSA]
+RewriteRule ^gazete-mansestleri$ sayfa/gazete-mansestleri.php [L,QSA]
+RewriteRule ^uye-paneli$         sayfa/uye-paneli.php         [L,QSA]
+RewriteRule ^user_action$        user_action.php              [L,QSA]
+RewriteRule ^hakkimizda$         sayfa/hakkimizda.php         [L,QSA]
+RewriteRule ^iletisim$           sayfa/iletisim.php           [L,QSA]
+RewriteRule ^gizlilik$           sayfa/gizlilik.php           [L,QSA]
+RewriteRule ^kullanim-sartlari$  sayfa/kullanim-sartlari.php  [L,QSA]
+RewriteRule ^reklam$             sayfa/reklam.php             [L,QSA]
+
+# Hassas dosyalara doğrudan erişimi engelle
+<FilesMatch "^(config\.php|functions\.php|_template\.php|.*\.sql)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Admin rotaları
+RewriteRule ^admin/?$                  admin/index.php             [L,QSA]
+RewriteRule ^admin/login/?$            admin/login.php             [L,QSA]
+RewriteRule ^admin/logout/?$           admin/logout.php            [L,QSA]
+RewriteRule ^admin/ayarlar/?$          admin/ayarlar/index.php     [L,QSA]
+RewriteRule ^admin/haberler/?$         admin/haberler/index.php    [L,QSA]
+RewriteRule ^admin/haberler/ekle$    admin/haberler/ekle.php     [L,QSA]
+RewriteRule ^admin/kategoriler/?$      admin/kategoriler/index.php [L,QSA]
+RewriteRule ^admin/reklamlar/?$        admin/reklamlar/index.php   [L,QSA]
+RewriteRule ^admin/uyeler/?$           admin/uyeler/index.php      [L,QSA]
+RewriteRule ^admin/yorumlar/?$         admin/yorumlar/index.php    [L,QSA]
+RewriteRule ^admin/medya/?$            admin/medya/index.php       [L,QSA]
+RewriteRule ^admin/loglar/?$           admin/loglar/index.php      [L,QSA]
